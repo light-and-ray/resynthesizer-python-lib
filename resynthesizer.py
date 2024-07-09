@@ -31,7 +31,7 @@ T_Gray = 2
 T_GrayA = 3
 
 # Load the shared library
-resynthesizer_lib = ctypes.CDLL("./resynthesizer.so")
+resynthesizer_lib = ctypes.CDLL("./bin/resynthesizer.so")
 
 # Define the function prototype
 imageSynth = resynthesizer_lib.imageSynth

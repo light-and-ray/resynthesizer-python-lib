@@ -25,7 +25,7 @@ result.save('result.jpg')
 
 ## try
 
-Install and run Gradio 3 demo requirements:
+Install Gradio 3 demo requirements and run:
 ```bash
 python -m venv venv
 . venv/bin/activate
@@ -40,9 +40,9 @@ python ./demo.py
 
 1. `git clone https://github.com/61315/resynthesizer`
 
-1. install `gcc`, `make`
+2. install `gcc`, `make`
 
-1. Modify `Makefile` (added `-fPIC`, use `gcc` instead of `clag`, remove all examples):
+3. Modify `Makefile` (added `-fPIC`, use `gcc` instead of `clag`, remove all examples):
 <details>
 
 <summary>Makefile</summary>
@@ -119,7 +119,7 @@ clean:
 ```
 </details>
 
-1. Link:
+4. Link:
 ```bash
 ld -shared -o lib.so build/resynthesizer/*.o
 ```

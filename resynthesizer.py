@@ -1,8 +1,8 @@
-import ctypes
+import ctypes, os
 from ctypes import Structure, POINTER, CFUNCTYPE
 from ctypes import c_void_p, c_int, c_double, c_char_p, c_uint, c_size_t, c_ubyte
 
-from PIL import Image, ImageChops
+from PIL import Image
 
 # Define the structs corresponding to the C headers
 class ImageBuffer(Structure):
@@ -31,7 +31,10 @@ T_Gray = 2
 T_GrayA = 3
 
 # Load the shared library
-resynthesizer_lib = ctypes.CDLL("./bin/resynthesizer.so")
+if os.name == 'nt':
+    resynthesizer_lib = ctypes.CDLL("./bin/resynthesizer.dll")
+else:
+    resynthesizer_lib = ctypes.CDLL("./bin/resynthesizer.so")
 
 # Define the function prototype
 imageSynth = resynthesizer_lib.imageSynth
@@ -137,3 +140,14 @@ def resynthesize(input_image, mask_image, parameters=None):
 
 
 
+if __name__ == "__main__":
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument('image')
+    parser.add_argument('mask')
+    parser.add_argument('output', default="out.png")
+    args = parser.parse_args()
+    image = Image.open(args.image)
+    mask = Image.open(args.mask).resize(image.size)
+    output = resynthesize(image, mask)
+    output.save(args.output)

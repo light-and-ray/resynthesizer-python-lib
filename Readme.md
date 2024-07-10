@@ -34,6 +34,17 @@ python ./demo.py
 
 ```
 
+Windows:
+```cmd
+python -m venv venv
+venv\Script\activate
+pip install gradio==3.41.2 pillow
+pip install msvc-runtime setuptools
+# you also need to have installed https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist?view=msvc-170#latest-microsoft-visual-c-redistributable-version
+python ./demo.py
+```
+
+
 ![](/demo.jpg)
 
 ## resynthesizer.so build
@@ -91,23 +102,6 @@ $(BUILD_DIR)/%.o: %.c
 	mkdir -p $(dir $@)
 	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
 
-fuzz: $(EXAMPLE_DIR)/ppm
-	@echo "\033[1;92mFuzzing...\033[0m"
-	mkdir -p $(EXAMPLE_DIR)/output
-	@for number in 0 1 2 3 4 ; do \
-		for context in 0 1 2 3 4 5 6 7 8 ; do \
-			for neighbors in 9 64 ; do \
-				for probes in 64 256 ; do \
-					$(EXAMPLE_DIR)/ppm \
-					$(ASSET_DIR)/source00$${number}.ppm \
-					$(ASSET_DIR)/mask00$${number}.ppm \
-					$(EXAMPLE_DIR)/output/result00$${number}"_"$${context}"_"$${neighbors}"_"$${probes}.ppm \
-					$${context} $${neighbors} $${probes} ; \
-				done \
-			done \
-		done \
-	done
-
 .PHONY: clean test all
 
 clean:
@@ -121,8 +115,10 @@ clean:
 
 4. Link:
 ```bash
-ld -shared -o lib.so build/resynthesizer/*.o
+gcc -shared -o lib.so build/resynthesizer/*.o
 ```
+
+5. For Windows I've used `clang` from `msys2` instead of `gcc`
 
 
 ## Todo:

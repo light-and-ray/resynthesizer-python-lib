@@ -118,9 +118,8 @@ clean:
 gcc -shared -o lib.so build/resynthesizer/*.o
 ```
 
-5. For Windows I've used `clang` from `msys2` instead of `gcc`
+5. For .dll I've used `x86_64-w64-mingw32-gcc` from `sudo apt-get install gcc-mingw-w64` instead of `gcc`
 
 
 ## Todo:
-- build for Windows
 - pack into wheel and add into pip repository

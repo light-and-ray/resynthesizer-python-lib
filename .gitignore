@@ -3,3 +3,5 @@ __pycache__
 .directory
 venv
 resynthesizer_src
+/*.jpg
+/*.png

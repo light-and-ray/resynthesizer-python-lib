@@ -141,6 +141,3 @@ gcc -shared -o lib.so build/resynthesizer/*.o
 5. For .dll I've used `x86_64-w64-mingw32-gcc` from `sudo apt-get install gcc-mingw-w64` instead of `gcc`. It shows strange worse result on my virtual machine, I don't know why. They are the same if I build in VM using clang, or if I build it on Linux
 
 6. For Max OS .dylib was built by the author: https://github.com/61315/resynthesizer/issues/6#issuecomment-2221651270
-
-## Todo:
-- pack into wheel and add into pip repository

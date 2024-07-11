@@ -4,7 +4,7 @@ from ctypes import c_void_p, c_int, c_double, c_char_p, c_uint, c_size_t, c_ubyt
 
 from PIL import Image
 
-# Define the structs corresponding to the C headers
+
 class ImageBuffer(Structure):
     _fields_ = [
         ("data", POINTER(c_ubyte)),
@@ -31,7 +31,6 @@ T_Gray = 2
 T_GrayA = 3
 
 
-# Load the shared library
 if platform.system() == 'Windows':
     resynthesizer_lib = ctypes.CDLL("./bin/libresynthesizer.dll")
 elif platform.system() == 'Darwin':
@@ -40,7 +39,6 @@ else:
     resynthesizer_lib = ctypes.CDLL("./bin/libresynthesizer.so")
 
 
-# Define the function prototype
 imageSynth = resynthesizer_lib.imageSynth
 imageSynth.argtypes = [
     POINTER(ImageBuffer),
@@ -55,13 +53,10 @@ imageSynth.restype = c_int
 
 
 def pil_image_to_image_buffer(image: Image.Image):
-    # Get the raw byte array of the image
     img_bytes = image.tobytes()
 
-    # Create a ctypes array from the raw byte data
     img_data = (c_ubyte * len(img_bytes)).from_buffer_copy(img_bytes)
 
-    # Create an instance of ImageBuffer
     input_buffer = ImageBuffer()
     input_buffer.data = ctypes.cast(img_data, POINTER(c_ubyte))
     input_buffer.width = image.width
@@ -73,18 +68,10 @@ def pil_image_to_image_buffer(image: Image.Image):
 
 
 
-
 def image_buffer_to_pil_image(image_buffer, mode):
-    # Calculate the size of the buffer
     buffer_size = image_buffer.rowBytes * image_buffer.height
-
-    # Create a bytes object from the buffer data
     buffer_data = ctypes.cast(image_buffer.data, POINTER(ctypes.c_ubyte * buffer_size))
-
-    # Convert buffer_data to bytes object
     buffer_bytes = bytes(buffer_data.contents)
-
-    # Create PIL Image from bytes data
     pil_image = Image.frombytes(mode, (image_buffer.width, image_buffer.height), buffer_bytes)
 
     return pil_image
@@ -106,24 +93,21 @@ def getDefaultParams():
 
 
 
-# Python function to wrap imageSynth
 def resynthesize(input_image, mask_image, parameters=None):
     if parameters is None:
         parameters = getDefaultParams()
-    # Convert PIL images to ImageBuffer
+
     input_buffer = pil_image_to_image_buffer(input_image.convert('RGB'))
-    mask_buffer = pil_image_to_image_buffer(mask_image.convert('L'))
+    mask_buffer = pil_image_to_image_buffer(mask_image.convert('L').resize(input_image.size))
 
     image_format = T_RGB
 
-    # Set up progress callback (not implemented here)
     def progress_callback(percent_done, context_info):
+        # doesn't work because wasn't compiled with #define DEEP_PROGRESS
         pass
 
-    # Set up cancel flag
     cancel_flag = ctypes.c_int(0)
 
-    # Call the imageSynth function
     result = imageSynth(
         ctypes.byref(input_buffer),
         ctypes.byref(mask_buffer),
@@ -137,7 +121,6 @@ def resynthesize(input_image, mask_image, parameters=None):
     if result != 0:
         raise RuntimeError(f"imageSynth failed with error code {result}")
 
-    # Convert the output buffer to PIL Image
     output_image = image_buffer_to_pil_image(input_buffer, "RGB")
 
     return output_image
@@ -149,10 +132,10 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('image')
     parser.add_argument('mask')
-    parser.add_argument('output', default="out.png")
+    parser.add_argument('output', default="out.png", nargs='?')
     args = parser.parse_args()
     image = Image.open(args.image)
-    mask = Image.open(args.mask).resize(image.size)
+    mask = Image.open(args.mask)
     output = resynthesize(image, mask)
     output.save(args.output)
 

@@ -1,4 +1,4 @@
-import ctypes, platform
+import ctypes, platform, os
 from ctypes import Structure, POINTER, CFUNCTYPE
 from ctypes import c_void_p, c_int, c_double, c_char_p, c_uint, c_size_t, c_ubyte
 
@@ -31,12 +31,14 @@ T_Gray = 2
 T_GrayA = 3
 
 
+script_dir = os.path.dirname(os.path.abspath(__file__))
+
 if platform.system() == 'Windows':
-    resynthesizer_lib = ctypes.CDLL("./bin/libresynthesizer.dll")
+    resynthesizer_lib = ctypes.CDLL(os.path.join(script_dir, "bin", "libresynthesizer.dll"))
 elif platform.system() == 'Darwin':
-    resynthesizer_lib = ctypes.CDLL("./bin/libresynthesizer_universal.dylib")
+    resynthesizer_lib = ctypes.CDLL(os.path.join(script_dir, "bin", "libresynthesizer_universal.dylib"))
 else:
-    resynthesizer_lib = ctypes.CDLL("./bin/libresynthesizer.so")
+    resynthesizer_lib = ctypes.CDLL(os.path.join(script_dir, "bin", "libresynthesizer.so"))
 
 
 imageSynth = resynthesizer_lib.imageSynth

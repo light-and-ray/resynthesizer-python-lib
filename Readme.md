@@ -10,7 +10,7 @@ Requirements:
 pip install pillow
 ```
 
-Usage:
+## Usage:
 ```python
 from resynthesizer import resynthesize
 from PIL import Image
@@ -20,6 +20,26 @@ source = Image.open('source.jpg')
 mask = Image.open('mask.png')
 result = resynthesize(source, mask)
 result.save('result.jpg')
+
+```
+
+You can adjust resynthesizer's params if you want:
+```python
+from resynthesizer import TImageSynthParameters
+
+# defaults
+params = TImageSynthParameters()
+params.isMakeSeamlesslyTileableHorizontally = 1
+params.isMakeSeamlesslyTileableVertically = 1
+params.matchContextType = 1
+params.mapWeight = 0.5
+params.sensitivityToOutliers = 0.117
+params.patchSize = 30
+params.maxProbeCount = 200
+
+...
+
+result = resynthesize(source, mask, parameters=params)
 
 ```
 

@@ -4,10 +4,10 @@ https://github.com/61315/resynthesizer wrapped into python library
 
 Resynthesizer is a very old (2000 year) open-source equivalent to Adobe Photoshop's "Content-Aware Fill" feature
 
-Requirements:
+Installation:
 
 ```bash
-pip install pillow
+pip install resynthesizer
 ```
 
 ## Usage:

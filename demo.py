@@ -1,5 +1,5 @@
 import gradio as gr
-from resynthesizer import resynthesize
+from package import resynthesize
 
 def process(input):
     if not input:

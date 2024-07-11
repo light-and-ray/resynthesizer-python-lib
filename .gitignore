@@ -5,3 +5,6 @@ venv
 resynthesizer_src
 /*.jpg
 /*.png
+/package/build
+/package/dist
+/package/*.egg-info

@@ -1,4 +1,4 @@
-import ctypes, os
+import ctypes, platform
 from ctypes import Structure, POINTER, CFUNCTYPE
 from ctypes import c_void_p, c_int, c_double, c_char_p, c_uint, c_size_t, c_ubyte
 
@@ -30,11 +30,15 @@ T_RGBA = 1
 T_Gray = 2
 T_GrayA = 3
 
+
 # Load the shared library
-if os.name == 'nt':
-    resynthesizer_lib = ctypes.CDLL("./bin/resynthesizer.dll")
+if platform.system() == 'Windows':
+    resynthesizer_lib = ctypes.CDLL("./bin/libresynthesizer.dll")
+elif platform.system() == 'Darwin':
+    resynthesizer_lib = ctypes.CDLL("./bin/libresynthesizer_universal.dylib")
 else:
-    resynthesizer_lib = ctypes.CDLL("./bin/resynthesizer.so")
+    resynthesizer_lib = ctypes.CDLL("./bin/libresynthesizer.so")
+
 
 # Define the function prototype
 imageSynth = resynthesizer_lib.imageSynth
@@ -151,3 +155,4 @@ if __name__ == "__main__":
     mask = Image.open(args.mask).resize(image.size)
     output = resynthesize(image, mask)
     output.save(args.output)
+

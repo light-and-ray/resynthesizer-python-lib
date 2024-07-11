@@ -1,6 +1,7 @@
 from setuptools import setup, find_packages
 
 # python setup.py sdist bdist_wheel
+# twine upload resynthesizer-1.X-py3-none-any.whl resynthesizer-1.X.tar.gz
 
 setup(
     name='resynthesizer',
@@ -68,14 +69,14 @@ Original repo: https://github.com/bootchk/resynthesizer
 
 
     package_data={
-        '': ['resynthesizer/bin/*'],  # Include binary files under bin directory
+        '': ['resynthesizer/bin/*'],
     },
 
     # Include non-Python files
     include_package_data=True,
 
-    # License
-    license='GPL-3.0',  # Specify your license
+    license='GPL-3.0',
+
 
     # # Classifiers for PyPI
     # classifiers=[

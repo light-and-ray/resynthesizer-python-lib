@@ -39,7 +39,7 @@ params.maxProbeCount = 200
 
 # or get defaults
 from resynthesizer import getDefaultParams
-params = getDefaultParams
+params = getDefaultParams()
 
 ...
 
@@ -48,6 +48,8 @@ result = resynthesize(source, mask, parameters=params)
 ```
 
 ## try
+
+In console:
 
 ```bash
 python package/resynthesizer/resynthesizer.py image.png mask.png [out.png]

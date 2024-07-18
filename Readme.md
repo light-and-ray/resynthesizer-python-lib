@@ -27,7 +27,7 @@ You can adjust resynthesizer's params if you want:
 ```python
 from resynthesizer import TImageSynthParameters
 
-# defaults
+# same as defaults
 params = TImageSynthParameters()
 params.isMakeSeamlesslyTileableHorizontally = 1
 params.isMakeSeamlesslyTileableVertically = 1
@@ -36,6 +36,10 @@ params.mapWeight = 0.5
 params.sensitivityToOutliers = 0.117
 params.patchSize = 30
 params.maxProbeCount = 200
+
+# or get defaults
+from resynthesizer import getDefaultParams
+params = getDefaultParams
 
 ...
 

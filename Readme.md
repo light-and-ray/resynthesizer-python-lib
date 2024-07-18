@@ -45,6 +45,12 @@ result = resynthesize(source, mask, parameters=params)
 
 ## try
 
+```bash
+python package/resynthesizer/resynthesizer.py image.png mask.png [out.png]
+```
+
+Or in Gradio UI:
+
 Install Gradio 3 demo requirements and run:
 ```bash
 python -m venv venv
